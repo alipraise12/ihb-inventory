@@ -3,8 +3,7 @@ import './App.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
-
-const API_BASE_URL = 'http://localhost:5000/api';
+import { API_URL } from './config';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -47,7 +46,7 @@ export default function Register() {
     setLoadingCode(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/send-code`, {
+      const response = await fetch(`${API_URL}/send-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: userEmail }),
@@ -61,7 +60,7 @@ export default function Register() {
         triggerAlert(data.message || 'Failed to send verification email.');
       }
     } catch (err) {
-      triggerAlert('Cannot connect to server on port 5000.');
+      triggerAlert('Cannot connect to backend server.');
     } finally {
       setLoadingCode(false);
     }
@@ -82,7 +81,7 @@ export default function Register() {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/verify-code`, {
+      const response = await fetch(`${API_URL}/verify-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: formData.email, code: verificationCode }),
@@ -126,7 +125,7 @@ export default function Register() {
 
     // Call MongoDB Registration Endpoint
     try {
-      const response = await fetch(`${API_BASE_URL}/register`, {
+      const response = await fetch(`${API_URL}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fullName, email, phone, password }),

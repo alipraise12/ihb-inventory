@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { API_URL } from './config';
 
 const TransactionHistory = () => {
   const [transactions, setTransactions] = useState([]);
@@ -14,7 +15,7 @@ const TransactionHistory = () => {
 
   const fetchTransactions = useCallback(async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/transactions', {
+      const res = await fetch(`${API_URL}/api/transactions`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -59,7 +60,7 @@ const TransactionHistory = () => {
     if (tx.stockItems && tx.stockItems.length > 0) {
       text += `--------------------------------\n*Items Purchased:*\n`;
       tx.stockItems.forEach((item, index) => {
-        text += `${index + 1}. ${item.productName} - Qty: ${item.quantity} ${item.unit || 'units'} (@ ₦${(item.costPrice || 0).toLocaleString()})\n`;
+        text += `${index + 1}. ${item.productName} Qty: ${item.quantity} ${item.unit || 'units'} (@ ₦${(item.costPrice || 0).toLocaleString()})\n`;
       });
     }
 

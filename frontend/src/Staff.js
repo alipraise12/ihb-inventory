@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { API_URL } from './config';
 
 const Staff = () => {
   const [staffList, setStaffList] = useState([]);
@@ -79,7 +80,7 @@ const Staff = () => {
     if (!token) return navigate('/login');
 
     try {
-      const res = await fetch('http://localhost:5000/api/staff/list', {
+      const res = await fetch(`${API_URL}/api/staff/list`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -130,7 +131,7 @@ const Staff = () => {
     };
 
     try {
-      const res = await fetch('http://localhost:5000/api/staff/create', {
+      const res = await fetch(`${API_URL}/api/staff/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -177,7 +178,7 @@ const Staff = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/staff/${staffId}`, {
+      const res = await fetch(`${API_URL}/api/staff/${staffId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -216,7 +217,7 @@ const Staff = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/staff/${staffId}`, {
+      const res = await fetch(`${API_URL}/api/staff/${staffId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });

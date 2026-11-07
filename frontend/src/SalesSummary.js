@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { API_URL } from './config';
 
 const SalesSummary = () => {
   const [sales, setSales] = useState([]);
@@ -23,13 +24,13 @@ const SalesSummary = () => {
 
     try {
       const [userRes, salesRes, stockRes] = await Promise.all([
-        fetch('http://localhost:5000/api/users/me', {
+        fetch(`${API_URL}/api/users/me`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch('http://localhost:5000/api/sales', {
+        fetch(`${API_URL}/api/sales`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch('http://localhost:5000/api/stock', {
+        fetch(`${API_URL}/api/stock`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { API_URL } from './config';
 
 const Stock = () => {
   const [activeTab, setActiveTab] = useState('warehouse'); // 'warehouse' or 'pending'
@@ -75,13 +76,13 @@ const Stock = () => {
 
     try {
       const [stockRes, pendingRes, auditRes] = await Promise.all([
-        fetch('http://localhost:5000/api/stock', {
+        fetch(`${API_URL}/api/stock`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch('http://localhost:5000/api/stock/pending', {
+        fetch(`${API_URL}/api/stock/pending`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch('http://localhost:5000/api/audit-history', {
+        fetch(`${API_URL}/api/audit-history`, {
           headers: { Authorization: `Bearer ${token}` },
         })
       ]);
@@ -135,7 +136,7 @@ const Stock = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/stock/verify/${id}`, {
+      const res = await fetch(`${API_URL}/api/stock/verify/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ sellingPrice: sellingPriceVal }),
@@ -174,7 +175,7 @@ const Stock = () => {
       for (const id of selectedPendingIds) {
         const item = pendingStock.find(p => p._id === id);
         const sellingPriceVal = parseNumberInput(pendingSellingPrices[id] !== undefined ? pendingSellingPrices[id] : item?.sellingPrice);
-        await fetch(`http://localhost:5000/api/stock/verify/${id}`, {
+        await fetch(`${API_URL}/api/stock/verify/${id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
           body: JSON.stringify({ sellingPrice: sellingPriceVal }),
@@ -209,7 +210,7 @@ const Stock = () => {
     const token = localStorage.getItem('token');
     const id = item._id || item.id;
     try {
-      const res = await fetch(`http://localhost:5000/api/stock/${id}`, {
+      const res = await fetch(`${API_URL}/api/stock/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({
@@ -239,7 +240,7 @@ const Stock = () => {
     const productId = item._id || item.id;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/stock/${productId}`, {
+      const res = await fetch(`${API_URL}/api/stock/${productId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -303,7 +304,7 @@ const Stock = () => {
     };
 
     try {
-      const res = await fetch('http://localhost:5000/api/stock/add', {
+      const res = await fetch(`${API_URL}/api/stock/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -375,7 +376,7 @@ const Stock = () => {
     };
 
     try {
-      const res = await fetch(`http://localhost:5000/api/stock/${productId}`, {
+      const res = await fetch(`${API_URL}/api/stock/${productId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -415,7 +416,7 @@ const Stock = () => {
     }
 
     try {
-      const deleteUrl = `http://localhost:5000/api/stock/${productId}`;
+      const deleteUrl = `${API_URL}/api/stock/${productId}`;
       const res = await fetch(deleteUrl, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },

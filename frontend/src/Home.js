@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from './config';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const Home = () => {
 
       // Call endpoint to initialize or record the trial start timestamp in MongoDB
       await axios.post(
-        'http://localhost:5000/api/start-trial',
+        `${API_URL}/api/start-trial`,
         {},
         {
           headers: {

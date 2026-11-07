@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+import { API_URL } from './config';
 
 // Custom Searchable Dropdown Component
 const SearchableProductSelect = ({ idx, stockId, stockList, onSelectChange, inputBorderStyle }) => {
@@ -181,15 +182,15 @@ const Sales = () => {
     if (!token) return navigate('/login');
 
     try {
-      let queryUrl = 'http://localhost:5000/api/sales';
+      let queryUrl = `${API_URL}/api/sales`;
       const params = new URLSearchParams();
       if (startDate) params.append('startDate', startDate);
       if (endDate) params.append('endDate', endDate);
       if (params.toString()) queryUrl += `?${params.toString()}`;
 
       const [userRes, stockRes, salesRes] = await Promise.all([
-        fetch('http://localhost:5000/api/users/me', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('http://localhost:5000/api/stock', { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API_URL}/api/users/me`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API_URL}/api/stock`, { headers: { Authorization: `Bearer ${token}` } }),
         fetch(queryUrl, { headers: { Authorization: `Bearer ${token}` } }),
       ]);
 
@@ -322,7 +323,7 @@ const Sales = () => {
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/sales/add', {
+      const res = await fetch(`${API_URL}/api/sales/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

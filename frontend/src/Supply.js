@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
+import { API_URL } from './config';
 
 // Helper function to format numbers with commas
 const formatNumberWithCommas = (value) => {
@@ -153,10 +154,10 @@ const Supply = () => {
   const fetchAccountDetails = useCallback(async () => {
     try {
       const [accountRes, userRes] = await Promise.all([
-        fetch('http://localhost:5000/api/account/details', {
+        fetch(`${API_URL}/api/account/details`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch('http://localhost:5000/api/users/me', {
+        fetch(`${API_URL}/api/users/me`, {
           headers: { Authorization: `Bearer ${token}` },
         })
       ]);
@@ -179,7 +180,7 @@ const Supply = () => {
 
   const fetchBanks = useCallback(async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/banks', {
+      const res = await fetch(`${API_URL}/api/banks`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -210,7 +211,7 @@ const Supply = () => {
         setResolvedAccountName('');
         
         try {
-          const res = await fetch('http://localhost:5000/api/resolve-account', {
+          const res = await fetch(`${API_URL}/api/resolve-account`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -294,7 +295,7 @@ const Supply = () => {
         })) : [],
       };
 
-      const response = await fetch('http://localhost:5000/api/transfer', {
+      const response = await fetch(`${API_URL}/api/transfer`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

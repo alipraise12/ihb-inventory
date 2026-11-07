@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { usePaystackPayment } from 'react-paystack';
 import Navbar from './Navbar';
+import { API_URL } from './config';
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
@@ -47,7 +48,7 @@ const Dashboard = () => {
     
     try {
       const token = localStorage.getItem('token');
-      await fetch('http://localhost:5000/api/verify-payment', {
+      await fetch(`${API_URL}/api/verify-payment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -80,13 +81,13 @@ const Dashboard = () => {
 
     try {
       const [userRes, stockRes, salesRes] = await Promise.all([
-        fetch('http://localhost:5000/api/users/me', {
+        fetch(`${API_URL}/api/users/me`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch('http://localhost:5000/api/stock', {
+        fetch(`${API_URL}/api/stock`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch('http://localhost:5000/api/sales', {
+        fetch(`${API_URL}/api/sales`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
