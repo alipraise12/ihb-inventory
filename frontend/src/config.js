@@ -1,11 +1,8 @@
-// frontend/src/config.js
 const getApiUrl = () => {
-  // Check if running inside a Capacitor mobile app
-  if (window.Capacitor && window.Capacitor.isNativePlatform()) {
-    return 'https://ihb-inventory-api.onrender.com/api';
+  if (typeof window !== 'undefined' && window.Capacitor && window.Capacitor.isNativePlatform()) {
+    return 'https://ihb-inventory-api.onrender.com';
   }
-  // Fallback for local browser web development
-  return process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  return process.env.REACT_APP_API_URL || 'https://ihb-inventory-api.onrender.com';
 };
 
-export const API_BASE_URL = getApiUrl();
+export const API_URL = getApiUrl();
