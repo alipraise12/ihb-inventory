@@ -21,7 +21,7 @@ const Login = () => {
     setAlert({ show: true, message, type });
     setTimeout(() => {
       setAlert({ show: false, message: '', type: '' });
-    }, 4000);
+    }, 6000); // Increased slightly to give you time to read debug messages
   };
 
   const handleSubmit = async (e) => {
@@ -54,7 +54,8 @@ const Login = () => {
         showAlert(data.message || 'Invalid email or password.');
       }
     } catch (err) {
-      showAlert('Network error. Is your server running or accessible?');
+      // Adjusted catch block to show the exact error and target URL on screen
+      showAlert(`Err: ${err.message || 'Network failed'} | URL: ${API_URL}`);
     } finally {
       setLoading(false);
     }
