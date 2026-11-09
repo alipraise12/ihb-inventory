@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_URL } from './config';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -28,7 +29,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/login', {
+      const response = await fetch(`${API_URL}/api/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,7 +54,7 @@ const Login = () => {
         showAlert(data.message || 'Invalid email or password.');
       }
     } catch (err) {
-      showAlert('Network error. Is your server running on port 5000?');
+      showAlert('Network error. Is your server running or accessible?');
     } finally {
       setLoading(false);
     }
