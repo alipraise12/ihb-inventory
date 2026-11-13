@@ -305,11 +305,18 @@ app.post('/api/send-code', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Email is required' });
     }
 
+    const cleanEmail = email.toLowerCase().trim();
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Save code with a 10-minute expiry timestamp
+    otpStore.set(cleanEmail, {
+      code: verificationCode,
+      expiresAt: Date.now() + 10 * 60 * 1000 
+    });
 
     const data = await resend.emails.send({
       from: 'onboarding@pjcreativehouse.com',
-      to: [email.toLowerCase().trim()],
+      to: [cleanEmail],
       subject: 'Your Verification Code - IHB Inventory',
       html: `<h3>Your verification code is: <b>${verificationCode}</b></h3>`,
     });
@@ -324,13 +331,31 @@ app.post('/api/send-code', async (req, res) => {
 
 app.post('/api/verify-code', (req, res) => {
   const { email, code } = req.body;
-  const stored = otpStore.get(email?.toLowerCase());
-  if (!stored || stored.code !== code?.trim()) {
+  if (!email || !code) {
+    return res.status(400).json({ success: false, message: 'Email and code are required' });
+  }
+
+  const cleanEmail = email.toLowerCase().trim();
+  const record = otpStore.get(cleanEmail);
+
+  if (!record) {
+    return res.status(400).json({ success: false, message: 'No verification code found. Please request a new one.' });
+  }
+
+  if (Date.now() > record.expiresAt) {
+    otpStore.delete(cleanEmail);
+    return res.status(400).json({ success: false, message: 'Verification code has expired.' });
+  }
+
+  if (String(record.code).trim() !== String(code).trim()) {
     return res.status(400).json({ success: false, message: 'Invalid or expired verification code.' });
   }
-  otpStore.delete(email.toLowerCase());
-  res.status(200).json({ success: true, message: 'Email verified successfully!' });
+
+  // Code is valid! Clean it up so it can't be reused
+  otpStore.delete(cleanEmail);
+  return res.status(200).json({ success: true, message: 'Email verified successfully!' });
 });
+
 
 app.post('/api/login', async (req, res) => {
   try {
