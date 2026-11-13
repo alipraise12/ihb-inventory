@@ -186,18 +186,41 @@ const Dashboard = () => {
 
       {/* Main Content Dashboard */}
       <main className="dashboard-content" style={{ maxWidth: '950px', margin: '0 auto', padding: '32px 16px' }}>
-        <div style={{ marginBottom: '28px' }}>
-          <h1 style={{ fontSize: '1.8rem', fontWeight: '900', margin: 0, color: 'var(--text-main)' }}>
-            Welcome back, {userData?.fullName || '...'}
-          </h1>
-          
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--primary)' }}></span>
-            <span style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: '700' }}>
-              {userData?.isSubscribed ? 'Subscription Ends In: ' : 'Trial Ends In: '}
-              {timeLeft.days}d : {String(timeLeft.hours).padStart(2, '0')}h : {String(timeLeft.minutes).padStart(2, '0')}m : {String(timeLeft.seconds).padStart(2, '0')}s
-            </span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '28px', flexWrap: 'wrap', gap: '16px' }}>
+          <div>
+            <h1 style={{ fontSize: '1.8rem', fontWeight: '900', margin: 0, color: 'var(--text-main)' }}>
+              Welcome back, {userData?.fullName || '...'}
+            </h1>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--primary)' }}></span>
+              <span style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: '700' }}>
+                {userData?.isSubscribed ? 'Subscription Ends In: ' : 'Trial Ends In: '}
+                {timeLeft.days}d : {String(timeLeft.hours).padStart(2, '0')}h : {String(timeLeft.minutes).padStart(2, '0')}m : {String(timeLeft.seconds).padStart(2, '0')}s
+              </span>
+            </div>
           </div>
+
+          {/* Go Premium Button using App's Primary Purple */}
+          <button
+            type="button"
+            onClick={() => setShowUpgradeModal(true)}
+            style={{
+              backgroundColor: 'var(--primary)',
+              color: 'white',
+              border: 'none',
+              padding: '10px 18px',
+              borderRadius: '8px',
+              fontWeight: '700',
+              fontSize: '0.9rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            ✨ Go Premium
+          </button>
         </div>
 
         {loading ? (
@@ -256,6 +279,33 @@ const Dashboard = () => {
         )}
       </main>
 
+      {/* Floating WhatsApp Feedback Widget with Official WhatsApp Green */}
+      <a
+        href="https://wa.me/2348000000000" // Replace with your support WhatsApp number
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          backgroundColor: '#25D366',
+          color: 'white',
+          borderRadius: '50%',
+          width: '50px',
+          height: '50px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+          zIndex: 1000,
+          fontSize: '24px',
+          textDecoration: 'none'
+        }}
+        title="Chat with us on WhatsApp for feedback"
+      >
+        💬
+      </a>
+
       {/* Upgrade Plan Pop-up Modal */}
       {showUpgradeModal && (
         <div className="modal-overlay" onClick={() => !isLockedOut && setShowUpgradeModal(false)}>
@@ -288,9 +338,10 @@ const Dashboard = () => {
                   padding: '12px',
                   fontSize: '0.95rem',
                   fontWeight: '800',
-                  borderRadius: '10px',
-                  background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
-                  boxShadow: '0 4px 12px rgba(34, 197, 94, 0.3)',
+                  borderRadius: '8px',
+                  backgroundColor: '#22c55e',
+                  color: 'white',
+                  border: 'none',
                   cursor: 'pointer',
                 }}
               >
